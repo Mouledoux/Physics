@@ -20,6 +20,8 @@ public class Cloth : MonoBehaviour
 			{
 				m_Node go = new m_Node(); 
 				go.self = Instantiate(node) as GameObject;
+				go.row = i;
+				go.col = j;
 
 				go.self.name = "[" + i + "][" + j + "]";
 				go.self.transform.position = nextPos;
@@ -32,30 +34,58 @@ public class Cloth : MonoBehaviour
 			nextPos.x += 1.5f;
 			nextPos.y = 0;
 		}
+
+		foreach(List<m_Node> cols in m_nodes)
+		{
+			foreach(m_Node n in cols)
+			{
+				if(n.col < m_nodes.Capacity)
+				{
+					if(m_nodes[n.col + 1][n.row].self)
+						n.links.Add(m_nodes[n.col + 1][n.row].self);
+					if(m_nodes[n.col][n.row + 1].self)
+						n.links.Add(m_nodes[n.col][n.row + 1].self);
+					if(m_nodes[n.col + 1][n.row + 1].self)
+						n.links.Add(m_nodes[n.col + 1][n.row + 1].self);
+				}
+				
+			}
+		}
+	}
+
+	void Update()
+	{
+		foreach(List<m_Node> cols in m_nodes)
+		{
+			foreach(m_Node n in cols)
+			{
+				n.Spring(spring);
+			}
+		}
 	}
 
 	struct m_Node
 	{
-		void Update()
+		public void Spring(float power)
 		{
+			Vector3 vel = Vector3.zero;
+			vel += new Vector3(0, -9.81f, 0);
 			foreach(GameObject other in links)
 			{
-				float dist = Vector3.Distance(self.transform.position,
-				                              other.transform.position);
-
-				if(dist > 2)
-				{
-					self.transform.position +=
-						(other.transform.position - self.transform.position) * Time.deltaTime * dist;
-				}
+				float dist = Vector3.Distance(self.transform.position, other.transform.position);
+				vel += (other.transform.position - self.transform.position) * dist * power;
+				
+				self.transform.position += vel * Time.deltaTime;
 			}
 		}
 		public GameObject self;
-		int row, col;
-		List<GameObject> links;
+		public int row, col;
+		public List<GameObject> links;
 	}
 
 	public GameObject node;
+
+	public float spring;
 
 	public int rows;
 	public int columns;
