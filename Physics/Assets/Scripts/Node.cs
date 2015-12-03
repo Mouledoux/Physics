@@ -7,6 +7,8 @@ public class Node : MonoBehaviour
 	public Vector3 vel;
 	public Vector3 frc;
 
+	public bool isLocked;
+
 	void Awake()
 	{
 		acl = vel = frc = Vector3.zero;

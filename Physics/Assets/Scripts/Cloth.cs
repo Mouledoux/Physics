@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class Cloth : MonoBehaviour
 {
-
 	void Start()
 	{
 		MakeCloth();
@@ -16,7 +15,10 @@ public class Cloth : MonoBehaviour
 		{
 			for(int j = 0; j < rows; j++)
 			{
-				Instantiate(node, nextPos);
+				GameObject go = Instantiate(node, nextPos, transform.localRotation) as GameObject;
+				go.name = "[" + i + "][" + j + "]";
+
+				nodes.Add(new Vector2(i, j), go);
 
 				nextPos.y += 1.5f;
 			}
@@ -44,4 +46,6 @@ public class Cloth : MonoBehaviour
 
 	public int rows;
 	public int columns;
+
+	Dictionary<Vector2, GameObject> nodes = new Dictionary<Vector2, GameObject>();
 }
