@@ -3,31 +3,28 @@ using System.Collections;
 
 public class Spring : MonoBehaviour
 {
-	void Start ()
+	void Awake ()
 	{
-		
+		Fg = Fs = Vector3.zero;
 	}
 	
 	void Update ()
 	{
-		Vector3 vel = Vector3.zero;
+		/*
+		 * 
+		 * 
+		 */
 
-		vel += new Vector3(0, -9.81f, 0);
-
-		if(anchor_go == null)
-			anchor = transform.position;
-		else
-			anchor = anchor_go.transform.position;
-
-
-
-		float dist = Vector3.Distance(transform.position, anchor);
-		vel += (anchor - transform.position) * dist * spring;
-
-		transform.position += vel * Time.deltaTime;
+		//node_a.transform.position += ()
+		//node_b.transform.position += ()
 	}
 	
-	public float spring;
-	public Vector3 anchor;
-	public GameObject anchor_go;
+	public float springStrength;
+	public GameObject node_a;
+	public GameObject node_b;
+
+	Vector3 Fg;// = new Vector3(0, -9.81f, 0);
+	Vector3 Fs;
+	Vector3 Fd;
+	Vector3 Ftotal;
 }
