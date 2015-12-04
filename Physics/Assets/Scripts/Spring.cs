@@ -89,6 +89,8 @@ public class Spring : MonoBehaviour
 		node_a.transform.position += a.vel;
 		node_b.transform.position += b.vel;
 
+		GetComponent<LineRenderer>().SetPosition(0, node_a.transform.position);
+		GetComponent<LineRenderer>().SetPosition(1, node_b.transform.position);
 		Debug.DrawLine(node_a.transform.position, node_b.transform.position);
 		transform.position = (a.transform.position + b.transform.position) / 2;
 	}
