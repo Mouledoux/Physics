@@ -10,39 +10,53 @@ public class Cloth : MonoBehaviour
 
 	void MakeCloth()
 	{
-		Vector3 nextPos = Vector3.zero;
+		Vector3 nextPos = transform.position;
 		for(int i = 0; i < columns; i++)
 		{
 			for(int j = 0; j < rows; j++)
 			{
-				GameObject go = Instantiate(node, nextPos, transform.localRotation) as GameObject;
-				go.name = "[" + i + "][" + j + "]";
+				GameObject n = Instantiate(node, nextPos, transform.localRotation) as GameObject;
+				n.name = "[" + i + "][" + j + "]";
 
-				nodes.Add(new Vector2(i, j), go);
+				Vector2 key = new Vector2(i, j);
+
+				nodes.Add(key, n);
+
+				Vector2 s1 = new Vector2(i - 1, j);
+				Vector2 s2 = new Vector2(i, j - 1);
+				Vector2 s3 = new Vector2(i - 1, j - 1);
+
+				if(nodes.ContainsKey(s1))
+				{
+					GameObject s = Instantiate(spring);
+					s.GetComponent<Spring>().node_a = nodes[key];
+					s.GetComponent<Spring>().node_b = nodes[s1];
+					s.GetComponent<Spring>().Build();
+				}
+				if(nodes.ContainsKey(s2))
+				{
+					GameObject s = Instantiate(spring);
+					s.GetComponent<Spring>().node_a = nodes[key];
+					s.GetComponent<Spring>().node_b = nodes[s2];
+					s.GetComponent<Spring>().Build();
+				}
+				if(nodes.ContainsKey(s3))
+				{
+					GameObject s = Instantiate(spring);
+					s.GetComponent<Spring>().node_a = nodes[key];
+					s.GetComponent<Spring>().node_b = nodes[s3];
+					s.GetComponent<Spring>().Build();
+				}
 
 				nextPos.y += 1.5f;
 			}
 			nextPos.x += 1.5f;
-			nextPos.y = 0;
+			nextPos.y = transform.position.y;
 		}
-
-		/* Make the springs/////////////////////////////////////////////////////////////
-		foreach(List<m_Particle> row in m_nodes)
-		{
-			foreach(m_Particle p in row)
-			{
-				if(p.col < columns - 1 && p.row < rows - 1)
-				{
-					p.links.Add(m_nodes[p.col][p.row + 1].self);
-					p.links.Add(m_nodes[p.col + 1][p.row].self);
-					p.links.Add(m_nodes[p.col + 1][p.row + 1].self);
-				}
-			}
-		}
-		*///////////////////////////////////////////////////////////////////////////////
 	}
 
 	public GameObject node;
+	public GameObject spring;
 
 	public int rows;
 	public int columns;

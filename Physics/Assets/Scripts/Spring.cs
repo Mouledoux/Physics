@@ -3,11 +3,11 @@ using System.Collections;
 
 public class Spring : MonoBehaviour
 {
-	void Awake ()
+	public void Build ()
 	{
 		Ftotal = Vector3.zero;
 
-		Fg = new Vector3(0, -9.81f, 0);
+		Fg = new Vector3(0, -2f, 0);
 
 		if(node_a && node_b)
 		{
@@ -20,7 +20,7 @@ public class Spring : MonoBehaviour
 			a = node_a.GetComponent<Node>();
 			b = node_b.GetComponent<Node>();
 		}
-
+		/***********************************
 		else if(node_a && !node_b)
 		{
 			node_b = gameObject;
@@ -66,13 +66,18 @@ public class Spring : MonoBehaviour
 
 			a.isLocked = true;
 		}
+		*****************************************/
 	}
 	
 	void Update ()
 	{
 		e = (a.transform.position - b.transform.position).normalized;
-		Ftotal = Fg;
-		Ftotal += ((CalculateSpringForce() + CalculateSpringDamper()) * Vector3.Distance(a.transform.position, b.transform.position)) * e;
+
+		CalculateSpringForce();
+		CalculateSpringDamper();
+
+		Ftotal = (Fs * e) + (Fd * e);
+		//Ftotal += Fg;
 
 		CalculateNodeAcceleration(a);
 		CalculateNodeAcceleration(b);
@@ -84,23 +89,25 @@ public class Spring : MonoBehaviour
 		node_b.transform.position += b.vel;
 
 		Debug.DrawLine(node_a.transform.position, node_b.transform.position);
+		transform.position = (a.transform.position + b.transform.position) / 2;
 	}
 
-	float CalculateSpringForce()
+	void CalculateSpringForce()
 	{
 		Fs = -springStrength * (springLength - Vector3.Distance(a.transform.position, b.transform.position));
-		return Fs;
 	}
 
-	float CalculateSpringDamper()
+	void CalculateSpringDamper()
 	{
-		Fd = -springDamp * (a.vel - b.vel).magnitude;
-		return Fd;
+		float aVel = Vector3.Dot(e, a.vel);
+		float bVel = Vector3.Dot(e, b.vel);
+
+		Fd = -springDamp * (aVel - bVel);
 	}
 
 	void CalculateNodeAcceleration(Node n)
 	{
-		n.acl = (Ftotal);
+		n.acl = (Ftotal) * Time.deltaTime;
 	}
 
 	void CalculateNodeVelocity(Node n)
