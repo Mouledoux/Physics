@@ -75,11 +75,11 @@ public class Spring : MonoBehaviour
 	{
 		if(Input.GetKey(KeyCode.Space))
 		{
-			Wind += new Vector3(0, 1, 0) * Time.deltaTime;
+			Wind += new Vector3(0, 0, 1) * Time.deltaTime;
 		}
-		else if(Wind.magnitude > 0)
+		else
 		{
-			Wind -= new Vector3(0, 1, 0) * Time.deltaTime;
+			Wind = Vector3.zero;
 		}
 
 		e = (b.transform.position - a.transform.position).normalized;
@@ -89,10 +89,8 @@ public class Spring : MonoBehaviour
 
 		Ftotal = (Fs * e) + (Fd * e);
 
-		Ftotal += Wind;
-
 		CalculateNodeAcceleration(a);
-		Ftotal = -Ftotal;
+		Ftotal = -Ftotal;				// Q-Dogs assistants
 		CalculateNodeAcceleration(b);
 
 		CalculateNodeVelocity(a);
@@ -124,7 +122,7 @@ public class Spring : MonoBehaviour
 
 	void CalculateNodeAcceleration(Node n)
 	{
-		n.acl = (Ftotal + Fg) * Time.fixedDeltaTime;
+		n.acl = (Ftotal + Fg + Wind) * Time.fixedDeltaTime;
 	}
 
 	void CalculateNodeVelocity(Node n)

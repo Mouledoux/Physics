@@ -92,11 +92,11 @@ public class Cloth : MonoBehaviour
 				}
 
 				// locks the outer edges
-				if(j==0 || j == rows -1 || i == 0 || i == columns - 1)
+				if(j == 0 || j == rows -1)// || i == 0 || i == columns - 1)
 					nodes[key].GetComponent<Node>().isLocked = true;
 
 				// increase the next position by an offset value (up, or over) - z or y
-				nextPos.z += offset;
+				nextPos.y += offset;
 
 				// once the column is complete go to the next one
 			}
@@ -106,7 +106,7 @@ public class Cloth : MonoBehaviour
 			// increase the next position by another offset (side-by-side)
 			nextPos.x += offset;
 			// reset the offet to the bottom most point
-			nextPos.z = transform.position.z;
+			nextPos.y = transform.position.y;
 		}
 
 		// restart time
