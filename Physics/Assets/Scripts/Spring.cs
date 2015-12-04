@@ -9,6 +9,8 @@ public class Spring : MonoBehaviour
 
 		Fg = new Vector3(0, -1f, 0);
 
+		Wind = Vector3.zero;
+
 		if(node_a && node_b)
 		{
 			if(!node_a.GetComponent<Node>())
@@ -71,6 +73,14 @@ public class Spring : MonoBehaviour
 	
 	void FixedUpdate ()
 	{
+		if(Input.GetKey(KeyCode.Space))
+		{
+			Wind += new Vector3(0, 1, 0) * Time.deltaTime;
+		}
+		else if(Wind.magnitude > 0)
+		{
+			Wind -= new Vector3(0, 1, 0) * Time.deltaTime;
+		}
 
 		e = (b.transform.position - a.transform.position).normalized;
 
@@ -78,6 +88,8 @@ public class Spring : MonoBehaviour
 		CalculateSpringDamper();
 
 		Ftotal = (Fs * e) + (Fd * e);
+
+		Ftotal += Wind;
 
 		CalculateNodeAcceleration(a);
 		Ftotal = -Ftotal;
@@ -91,8 +103,10 @@ public class Spring : MonoBehaviour
 
 		GetComponent<LineRenderer>().SetPosition(0, node_a.transform.position);
 		GetComponent<LineRenderer>().SetPosition(1, node_b.transform.position);
-		Debug.DrawLine(node_a.transform.position, node_b.transform.position);
+		
 		transform.position = (a.transform.position + b.transform.position) / 2;
+
+		//Debug.DrawLine(node_a.transform.position, node_b.transform.position);
 	}
 
 	void CalculateSpringForce()
@@ -132,5 +146,6 @@ public class Spring : MonoBehaviour
 
 	Vector3 e;
 	Vector3 Fg;
+	public Vector3 Wind;
 	Vector3 Ftotal;
 }
