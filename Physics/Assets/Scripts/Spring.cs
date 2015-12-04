@@ -69,7 +69,7 @@ public class Spring : MonoBehaviour
 		*****************************************/
 	}
 	
-	void Update ()
+	void FixedUpdate ()
 	{
 
 		e = (b.transform.position - a.transform.position).normalized;
@@ -108,13 +108,13 @@ public class Spring : MonoBehaviour
 
 	void CalculateNodeAcceleration(Node n)
 	{
-		n.acl = (Ftotal + Fg) * Time.deltaTime;
+		n.acl = (Ftotal + Fg) * Time.fixedDeltaTime;
 	}
 
 	void CalculateNodeVelocity(Node n)
 	{
 		//if it's locked zero else add acceleration * dt
-		n.vel += !n.isLocked ? n.acl * Time.deltaTime : Vector3.zero;
+		n.vel += !n.isLocked ? n.acl * Time.fixedDeltaTime : Vector3.zero;
 	}
 
 	public float springStrength;

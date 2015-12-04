@@ -10,6 +10,8 @@ public class Cloth : MonoBehaviour
 
 	void MakeCloth()
 	{
+		Time.timeScale = 0;
+		Vector2 key;
 		Vector3 nextPos = transform.position;
 		for(int i = 0; i < columns; i++)
 		{
@@ -18,7 +20,7 @@ public class Cloth : MonoBehaviour
 				GameObject n = Instantiate(node, nextPos, transform.localRotation) as GameObject;
 				n.name = "[" + i + "][" + j + "]";
 
-				Vector2 key = new Vector2(i, j);
+				key = new Vector2(i, j);
 
 				nodes.Add(key, n);
 
@@ -33,6 +35,7 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_a = nodes[key];
 					s.GetComponent<Spring>().node_b = nodes[s1];
 					s.GetComponent<Spring>().Build();
+					s.transform.parent = nodes[key].transform;
 				}
 				if(nodes.ContainsKey(s2))
 				{
@@ -40,6 +43,7 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_a = nodes[key];
 					s.GetComponent<Spring>().node_b = nodes[s2];
 					s.GetComponent<Spring>().Build();
+					s.transform.parent = nodes[key].transform;
 				}
 				if(nodes.ContainsKey(s3))
 				{
@@ -47,6 +51,7 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_a = nodes[key];
 					s.GetComponent<Spring>().node_b = nodes[s3];
 					s.GetComponent<Spring>().Build();
+					s.transform.parent = nodes[key].transform;
 				}
 				if(nodes.ContainsKey(s4))
 				{
@@ -54,15 +59,19 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_a = nodes[key];
 					s.GetComponent<Spring>().node_b = nodes[s4];
 					s.GetComponent<Spring>().Build();
+					s.transform.parent = nodes[key].transform;
 				}
 
+				if(j==0 || j == rows -1 || i == 0 || i == columns - 1)
+					nodes[key].GetComponent<Node>().isLocked = true;
 
-				nextPos.y += 1.5f;
+				nextPos.z += 2f;
 			}
 			//nodes[key].GetComponent<Node>().isLocked = true;
-			nextPos.x += 1.5f;
-			nextPos.y = transform.position.y;
+			nextPos.x += 2f;
+			nextPos.z = transform.position.z;
 		}
+		Time.timeScale = 1;
 	}
 
 	public GameObject node;
