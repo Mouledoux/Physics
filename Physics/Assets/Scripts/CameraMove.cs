@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+[RequireComponent (typeof (Camera))]
 
+/// <summary>
+/// Addes the ability to move and rotate the camera that this script is attached to.
+/// </summary>
 public class CameraMove : MonoBehaviour
 {	
 	void Awake()
 	{
+		// Saves the initial transform values for later resetting
 		originPos = transform.position;
 		originRot = transform.localEulerAngles;
 		originScl = transform.localScale;
@@ -12,45 +17,48 @@ public class CameraMove : MonoBehaviour
 
 	void Update ()
 	{
-		float Th = 0;
-		float Tv = 0;
+		float Th = 0;	// Horizontal transform value
+		float Tv = 0;	// Verticle transform value
 
-		float Rx = 0;
-		float Ry = 0;
+		float Rx = 0;	// Rotation around the X-axis
+		float Ry = 0;	// Rotation around the Y-axis
 
-		if(Input.GetMouseButton(0))
+		if(Input.GetMouseButton(0))	// Checks if the left mouse button is being clicked
 		{
-			Th = speed * Input.GetAxis("Mouse X") * Time.deltaTime;
-			Tv = speed * Input.GetAxis("Mouse Y") * Time.deltaTime;
+			Th = speed * Input.GetAxis("Mouse X") * Time.deltaTime;	// Sets Th to the difference the horizontal movement of the mouse
+			Tv = speed * Input.GetAxis("Mouse Y") * Time.deltaTime;	// Sets Tv to the difference the verticle movement of the mouse
 		}
 
-		if(Input.GetMouseButton(1))
+		if(Input.GetMouseButton(1))	// Checks if the right mouse button is being clicked
 		{
-			Rx = speed * 0.1f * Input.GetAxis("Mouse Y") * Time.deltaTime;
-			Ry = speed * 0.1f * Input.GetAxis("Mouse X") * Time.deltaTime;
+			Rx = speed * 0.1f * Input.GetAxis("Mouse Y") * Time.deltaTime;	// Sets Rx to the difference the verticle movement of the mouse
+			Ry = speed * 0.1f * Input.GetAxis("Mouse X") * Time.deltaTime;	// Sets Ry to the difference the horizontal movement of the mouse
 		}
 
-		if(Input.GetAxis("Mouse ScrollWheel") > 0)
-			transform.position += transform.forward * speed * Time.deltaTime;
-		if(Input.GetAxis("Mouse ScrollWheel") < 0)
-			transform.position -= transform.forward * speed * Time.deltaTime;
+		if(Input.GetAxis("Mouse ScrollWheel") > 0)	// Checks if the mouse wheele is being rolled forward
+			transform.position += transform.forward * speed * Time.deltaTime;	// Moves the camera forward
 
-		transform.Translate(-Th, -Tv, 0);
-		transform.RotateAround(transform.position, transform.right, -Rx);
-		transform.RotateAround(transform.position, Vector3.up, Ry);
+		if(Input.GetAxis("Mouse ScrollWheel") < 0)	// Checks if the mouse wheele is being rolled backward
+			transform.position -= transform.forward * speed * Time.deltaTime;	// Moves the camera backward
 
-		if(Input.GetKey(resetKey))
-		{
-			transform.position = originPos;
-			transform.localEulerAngles = originRot;
-			transform.localScale = originScl;
+		transform.Translate(-Th, -Tv, 0);									// Moves the camera: left, right, up, and down
+		transform.RotateAround(transform.position, transform.right, -Rx);	// Rotates the camera to look up
+		transform.RotateAround(transform.position, Vector3.up, Ry);			// Rotates the camera to look down
+
+		/// Will reset the camera ti its initial position	//
+		if(Input.GetKey(resetKey))							//
+		{													//
+			transform.position = originPos;					//
+			transform.localEulerAngles = originRot;			//
+			transform.localScale = originScl;				//
 		}
 	}
 
-	public float speed;
-	public KeyCode resetKey;
 
-	Vector3 originPos;
-	Vector3 originRot;
-	Vector3 originScl;
+	public float speed;			// The speed the camera will move or rotate at
+	public KeyCode resetKey;	// The key that will be used to reset the camera's transform
+
+	Vector3 originPos;			// Initial position of the camera
+	Vector3 originRot;			// Initial rotation of the camera
+	Vector3 originScl;			// Initial scale of the camera
 }
