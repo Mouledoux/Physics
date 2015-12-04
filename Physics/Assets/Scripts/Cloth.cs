@@ -25,6 +25,7 @@ public class Cloth : MonoBehaviour
 				Vector2 s1 = new Vector2(i - 1, j);
 				Vector2 s2 = new Vector2(i, j - 1);
 				Vector2 s3 = new Vector2(i - 1, j - 1);
+				Vector2 s4 = new Vector2(i - 1, j + 1);
 
 				if(nodes.ContainsKey(s1))
 				{
@@ -47,9 +48,18 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_b = nodes[s3];
 					s.GetComponent<Spring>().Build();
 				}
+				if(nodes.ContainsKey(s4))
+				{
+					GameObject s = Instantiate(spring);
+					s.GetComponent<Spring>().node_a = nodes[key];
+					s.GetComponent<Spring>().node_b = nodes[s4];
+					s.GetComponent<Spring>().Build();
+				}
+
 
 				nextPos.y += 1.5f;
 			}
+			//nodes[key].GetComponent<Node>().isLocked = true;
 			nextPos.x += 1.5f;
 			nextPos.y = transform.position.y;
 		}

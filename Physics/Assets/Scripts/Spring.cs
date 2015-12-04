@@ -7,7 +7,7 @@ public class Spring : MonoBehaviour
 	{
 		Ftotal = Vector3.zero;
 
-		Fg = new Vector3(0, -2f, 0);
+		Fg = new Vector3(0, -1f, 0);
 
 		if(node_a && node_b)
 		{
@@ -71,15 +71,16 @@ public class Spring : MonoBehaviour
 	
 	void Update ()
 	{
-		e = (a.transform.position - b.transform.position).normalized;
+
+		e = (b.transform.position - a.transform.position).normalized;
 
 		CalculateSpringForce();
 		CalculateSpringDamper();
 
 		Ftotal = (Fs * e) + (Fd * e);
-		//Ftotal += Fg;
 
 		CalculateNodeAcceleration(a);
+		Ftotal = -Ftotal;
 		CalculateNodeAcceleration(b);
 
 		CalculateNodeVelocity(a);
@@ -94,7 +95,7 @@ public class Spring : MonoBehaviour
 
 	void CalculateSpringForce()
 	{
-		Fs = -springStrength * (springLength - Vector3.Distance(a.transform.position, b.transform.position));
+		Fs = -springStrength * (springLength - Vector3.Magnitude(b.transform.position - a.transform.position));
 	}
 
 	void CalculateSpringDamper()
@@ -107,7 +108,7 @@ public class Spring : MonoBehaviour
 
 	void CalculateNodeAcceleration(Node n)
 	{
-		n.acl = (Ftotal) * Time.deltaTime;
+		n.acl = (Ftotal + Fg) * Time.deltaTime;
 	}
 
 	void CalculateNodeVelocity(Node n)
