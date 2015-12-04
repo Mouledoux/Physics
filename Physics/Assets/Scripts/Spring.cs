@@ -22,60 +22,13 @@ public class Spring : MonoBehaviour
 			a = node_a.GetComponent<Node>();
 			b = node_b.GetComponent<Node>();
 		}
-		/***********************************
-		else if(node_a && !node_b)
-		{
-			node_b = gameObject;
-
-			if(!node_a.GetComponent<Node>())
-				node_a.AddComponent<Node>();
-
-			if(!node_b.GetComponent<Node>())
-				node_b.AddComponent<Node>();
-			
-			a = node_a.GetComponent<Node>();
-			b = node_b.GetComponent<Node>();
-		}
-
-		else if(!node_a && node_b)
-		{
-			node_a = gameObject;
-			
-			if(!node_a.GetComponent<Node>())
-				node_a.AddComponent<Node>();
-
-			if(!node_b.GetComponent<Node>())
-				node_b.AddComponent<Node>();
-
-			a = node_a.GetComponent<Node>();
-			b = node_b.GetComponent<Node>();
-		}
-
-		else
-		{
-			node_a = new GameObject();
-			node_b = gameObject;
-
-			node_a.AddComponent<Node>();
-
-			if(!node_b.GetComponent<Node>())
-				node_b.AddComponent<Node>();
-			
-			a = node_a.GetComponent<Node>();
-			b = node_b.GetComponent<Node>();
-
-			a.transform.position += b.transform.position;
-
-			a.isLocked = true;
-		}
-		*****************************************/
 	}
 	
 	void FixedUpdate ()
 	{
 		if(Input.GetKey(KeyCode.Space))
 		{
-			Wind += new Vector3(0, 0, 1) * Time.deltaTime;
+			Wind += Camera.main.transform.forward * Time.deltaTime;
 		}
 		else
 		{
@@ -103,8 +56,6 @@ public class Spring : MonoBehaviour
 		GetComponent<LineRenderer>().SetPosition(1, node_b.transform.position);
 		
 		transform.position = (a.transform.position + b.transform.position) / 2;
-
-		//Debug.DrawLine(node_a.transform.position, node_b.transform.position);
 	}
 
 	void CalculateSpringForce()

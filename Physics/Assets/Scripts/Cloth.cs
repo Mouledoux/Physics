@@ -18,7 +18,7 @@ public class Cloth : MonoBehaviour
 		// the current node we are making
 		Vector2 key;
 		// the position for the node to be
-		Vector3 nextPos = transform.position;
+		Vector3 nextPos = transform.localPosition;
 
 
 		// for every column
@@ -92,19 +92,16 @@ public class Cloth : MonoBehaviour
 				}
 
 				// locks the outer edges
-				if(j == 0 || j == rows -1)// || i == 0 || i == columns - 1)
+				if(j == 0)// || j == rows -1 || i == 0 || i == columns - 1)
 					nodes[key].GetComponent<Node>().isLocked = true;
 
-				// increase the next position by an offset value (up, or over) - z or y
-				nextPos.y += offset;
-
-				// once the column is complete go to the next one
+				// increase the next position by an offset value
+				nextPos += transform.up * offset;
 			}
 		
-			//nodes[key].GetComponent<Node>().isLocked = true;
-		
 			// increase the next position by another offset (side-by-side)
-			nextPos.x += offset;
+			nextPos = transform.position;
+			nextPos.x += offset * i + 1;
 			// reset the offet to the bottom most point
 			nextPos.y = transform.position.y;
 		}
