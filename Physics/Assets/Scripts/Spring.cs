@@ -26,9 +26,9 @@ public class Spring : MonoBehaviour
 	
 	void FixedUpdate ()
 	{
-		if(Input.GetKey(KeyCode.Space))
+		if(Input.GetMouseButton(0))
 		{
-			Wind += Camera.main.transform.forward * Time.deltaTime;
+			Wind += ((a.transform.position - b.transform.position).normalized + Camera.main.transform.forward.normalized) * Time.deltaTime;
 		}
 		else
 		{

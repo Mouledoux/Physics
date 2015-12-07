@@ -92,7 +92,7 @@ public class Cloth : MonoBehaviour
 				}
 
 				// locks the outer edges
-				if(j == 0)// || j == rows -1 || i == 0 || i == columns - 1)
+				if(j == 0 || j == rows -1 || i == 0 || i == columns - 1)
 					nodes[key].GetComponent<Node>().isLocked = true;
 
 				// increase the next position by an offset value
