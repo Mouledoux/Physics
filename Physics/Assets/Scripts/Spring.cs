@@ -21,19 +21,23 @@ public class Spring : MonoBehaviour
 			
 			a = node_a.GetComponent<Node>();
 			b = node_b.GetComponent<Node>();
+
+			springLength = Vector3.Distance(a.transform.position, b.transform.position);
 		}
 	}
 	
 	void FixedUpdate ()
 	{
-		if(Input.GetMouseButton(0))
+		if(Input.GetKey(KeyCode.Space))
 		{
-			Wind += ((a.transform.position - b.transform.position).normalized + Camera.main.transform.forward.normalized) * Time.deltaTime;
+			CalculateWind();
 		}
 		else
 		{
 			Wind = Vector3.zero;
 		}
+
+		/////////////////////////////////////////////////////////////
 
 		e = (b.transform.position - a.transform.position).normalized;
 
@@ -56,6 +60,11 @@ public class Spring : MonoBehaviour
 		GetComponent<LineRenderer>().SetPosition(1, node_b.transform.position);
 		
 		transform.position = (a.transform.position + b.transform.position) / 2;
+
+		if(Vector3.Distance(a.transform.position, b.transform.position) > springLength * 2)
+		{
+			Destroy(gameObject);
+		}
 	}
 
 	void CalculateSpringForce()
@@ -73,13 +82,17 @@ public class Spring : MonoBehaviour
 
 	void CalculateNodeAcceleration(Node n)
 	{
-		n.acl = (Ftotal + Fg + Wind) * Time.fixedDeltaTime;
+		n.acl = (Ftotal + Fg + Wind + Move) * Time.fixedDeltaTime;
 	}
 
 	void CalculateNodeVelocity(Node n)
 	{
 		//if it's locked zero else add acceleration * dt
 		n.vel += !n.isLocked ? n.acl * Time.fixedDeltaTime : Vector3.zero;
+	}
+	void CalculateWind()
+	{
+		
 	}
 
 	public float springStrength;
@@ -95,6 +108,7 @@ public class Spring : MonoBehaviour
 
 	Vector3 e;
 	Vector3 Fg;
-	public Vector3 Wind;
+	Vector3 Wind;
+	Vector3 Move;
 	Vector3 Ftotal;
 }

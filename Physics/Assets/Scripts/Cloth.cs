@@ -92,7 +92,7 @@ public class Cloth : MonoBehaviour
 				}
 
 				// locks the outer edges
-				if(j == 0 || j == rows -1 || i == 0 || i == columns - 1)
+				if(/*j == 0 ||*/ j == rows -1 )//|| i == 0 || i == columns - 1)
 					nodes[key].GetComponent<Node>().isLocked = true;
 
 				// increase the next position by an offset value
@@ -101,11 +101,14 @@ public class Cloth : MonoBehaviour
 		
 			// increase the next position by another offset (side-by-side)
 			nextPos = transform.position;
-			nextPos.x += offset * i + 1;
+			nextPos.x += offset * (i + 1);
 			// reset the offet to the bottom most point
 			nextPos.y = transform.position.y;
 		}
-
+		GameObject bottom = Instantiate(spring);					
+		bottom.GetComponent<Spring>().node_a = nodes[Vector2.zero];
+		bottom.GetComponent<Spring>().node_b = nodes[new Vector2(columns-1, 0)];
+		bottom.GetComponent<Spring>().Build();
 		// restart time
 		Time.timeScale = 1;
 	}
