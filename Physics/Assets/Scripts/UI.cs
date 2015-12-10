@@ -7,4 +7,9 @@ public class UI : MonoBehaviour
     {
         Application.Quit();
     }
+
+	public void Restart()
+	{
+		Application.LoadLevel(Application.loadedLevel);
+	} 
 }

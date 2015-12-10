@@ -54,7 +54,7 @@ public class Spring : MonoBehaviour
 		
 		transform.position = (a.transform.position + b.transform.position) / 2;
 
-		if(Vector3.Distance(a.transform.position, b.transform.position) > springLength * 5)
+		if(Vector3.Distance(a.transform.position, b.transform.position) > springLength * 3)
 		{
 			Destroy(gameObject);
 		}

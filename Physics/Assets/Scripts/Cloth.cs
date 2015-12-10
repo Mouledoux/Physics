@@ -28,7 +28,6 @@ public class Cloth : MonoBehaviour
 		if(Input.GetKey(KeyCode.Space))
 		{
 			windForce += Camera.main.transform.forward * Time.fixedDeltaTime;
-			print ("wind");
 			foreach(List<GameObject> t in triangles)
 			{
 				Vector3 wind = Vector3.zero;
@@ -163,10 +162,10 @@ public class Cloth : MonoBehaviour
 			// reset the offet to the bottom most point
 			nextPos.y = transform.position.y;
 		}
-		GameObject bottom = Instantiate(spring);					
-		bottom.GetComponent<Spring>().node_a = nodes[Vector2.zero];
-		bottom.GetComponent<Spring>().node_b = nodes[new Vector2(columns-1, 0)];
-		bottom.GetComponent<Spring>().Build();
+		//GameObject bottom = Instantiate(spring);					
+		//bottom.GetComponent<Spring>().node_a = nodes[Vector2.zero];
+		//bottom.GetComponent<Spring>().node_b = nodes[new Vector2(columns-1, 0)];
+		//bottom.GetComponent<Spring>().Build();
 
 		// Makes the tirangles
 		// for every column
