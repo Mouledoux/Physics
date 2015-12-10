@@ -26,14 +26,14 @@ public class Node : MonoBehaviour
 		                     Vector3.Distance(transform.position,
 		                 Camera.main.transform.position));
 
-		if(Input.GetMouseButton(0) && Input.GetMouseButton(1))
+		if(Input.GetMouseButtonDown(0))
 		{
-			if(Vector3.Distance(screenMid, transform.position) < 3)
+			if(Vector3.Distance(screenMid, transform.position) < 10)
 			{
 				held = true;
 			}
 		}
-		else
+		else if(Input.GetMouseButtonUp(0))
 		{
 			held = false;
 		}
