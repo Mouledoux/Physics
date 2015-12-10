@@ -44,6 +44,10 @@ public class Node : MonoBehaviour
 			if(Input.GetKeyDown(KeyCode.L))
 			{
 				isLocked = !isLocked;
+				if(isLocked)
+				{
+					acl = vel = frc = Vector3.zero;
+				}
 			}
 		}
 	}
