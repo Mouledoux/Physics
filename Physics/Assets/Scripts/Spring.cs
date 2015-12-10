@@ -11,8 +11,6 @@ public class Spring : MonoBehaviour
 
         strMod = dmpMod = grvMod = 1.0f;
 
-		Wind = Vector3.zero;
-
 		if(node_a && node_b)
 		{
 			if(!node_a.GetComponent<Node>())
@@ -31,15 +29,6 @@ public class Spring : MonoBehaviour
 	void FixedUpdate ()
 	{
         Fg = new Vector3(0, -1f, 0) * grvMod;
-
-		if(Input.GetKey(KeyCode.Space))
-		{
-			CalculateWind();
-		}
-		else
-		{
-			Wind = Vector3.zero;
-		}
 
 		/////////////////////////////////////////////////////////////
 
@@ -69,6 +58,9 @@ public class Spring : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+
+		a.acl = Vector3.zero;
+		b.acl = Vector3.zero;
 	}
 
 	void CalculateSpringForce()
@@ -86,17 +78,13 @@ public class Spring : MonoBehaviour
 
 	void CalculateNodeAcceleration(Node n)
 	{
-		n.acl = (Ftotal + Fg + Wind + Move) * Time.fixedDeltaTime;
+		n.acl += (Ftotal + Fg) * Time.fixedDeltaTime;
 	}
 
 	void CalculateNodeVelocity(Node n)
 	{
 		//if it's locked zero else add acceleration * dt
 		n.vel += !n.isLocked ? n.acl * Time.fixedDeltaTime : Vector3.zero;
-	}
-	void CalculateWind()
-	{
-		
 	}
 
 	public float springStrength;
@@ -112,8 +100,6 @@ public class Spring : MonoBehaviour
 
 	Vector3 e;
 	Vector3 Fg;
-	Vector3 Wind;
-	Vector3 Move;
 	Vector3 Ftotal;
 
     public float strMod;

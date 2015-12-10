@@ -24,7 +24,43 @@ public class Cloth : MonoBehaviour
                 springs.Remove(s);
             }
         }
-    }
+
+		if(Input.GetKey(KeyCode.Space))
+		{
+			windForce += Camera.main.transform.forward * Time.fixedDeltaTime;
+			print ("wind");
+			foreach(List<GameObject> t in triangles)
+			{
+				Vector3 wind = Vector3.zero;
+				Vector3 velocity = Vector3.zero;
+				Vector3 norm = Vector3.zero;
+				float area = 0;
+
+				velocity = t[0].GetComponent<Node>().vel +
+						t[1].GetComponent<Node>().vel +
+						t[2].GetComponent<Node>().vel;
+				velocity /= 3;
+
+				norm = Vector3.Cross(t[0].transform.position.normalized,
+				                     t[1].transform.position.normalized);
+
+				area = 0.5f *
+					(Vector3.Distance(t[0].transform.position, t[1].transform.position) * 
+					 Vector3.Distance(t[0].transform.position, t[2].transform.position));
+
+				wind = velocity.magnitude * windForce;
+
+				foreach(GameObject n in t)
+				{
+					n.GetComponent<Node>().acl += wind / 3;
+				}
+			}
+		}
+		else if (windForce.magnitude > 0)
+		{
+			windForce -= windForce * Time.fixedDeltaTime;
+		}
+	}
 
 	/// <summary>
 	/// Makes the cloth.
@@ -131,6 +167,51 @@ public class Cloth : MonoBehaviour
 		bottom.GetComponent<Spring>().node_a = nodes[Vector2.zero];
 		bottom.GetComponent<Spring>().node_b = nodes[new Vector2(columns-1, 0)];
 		bottom.GetComponent<Spring>().Build();
+
+		// Makes the tirangles
+		// for every column
+		for(int i = 0; i < columns; i++)
+		{
+			// and for every row
+			for(int j = 0; j < rows; j++)
+			{
+				if(i % 2 == 0)
+				{
+					List<GameObject> n = new List<GameObject>();
+
+					Vector2 up = new Vector2(i, j+1);
+					Vector2 right = new Vector2(i+1, j);
+
+					if(nodes.ContainsKey(up) && 
+					   nodes.ContainsKey(right))
+					{
+						n.Add(nodes[new Vector2(i, j)]);
+						n.Add(nodes[up]);
+						n.Add(nodes[right]);
+
+						triangles.Add(n);
+					}
+				}
+				else
+				{
+					List<GameObject> n = new List<GameObject>();
+					
+					Vector2 down = new Vector2(i, j-1);
+					Vector2 left = new Vector2(i-1, j);
+					
+					if(nodes.ContainsKey(down) && 
+					   nodes.ContainsKey(left))
+					{
+						n.Add(nodes[new Vector2(i, j)]);
+						n.Add(nodes[down]);
+						n.Add(nodes[left]);
+						
+						triangles.Add(n);
+					}
+				}
+			}
+		}
+
 		// restart time
 		Time.timeScale = 1;
 	}
@@ -142,6 +223,7 @@ public class Cloth : MonoBehaviour
     public Slider damperMod;
     public Slider gravityMod;
 
+	Vector3 windForce;
 
 	public int rows;
 	public int columns;
@@ -149,4 +231,6 @@ public class Cloth : MonoBehaviour
 
 	Dictionary<Vector2, GameObject> nodes = new Dictionary<Vector2, GameObject>();
     List<GameObject> springs = new List<GameObject>();
+
+	List<List<GameObject>> triangles = new List<List<GameObject>>();
 }
