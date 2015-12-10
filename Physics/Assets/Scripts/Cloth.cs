@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class Cloth : MonoBehaviour
@@ -7,6 +8,23 @@ public class Cloth : MonoBehaviour
 	{
 		MakeCloth();
 	}
+
+    void FixedUpdate()
+    {
+        foreach(GameObject s in springs)
+        {
+            if (s)
+            {
+                s.GetComponent<Spring>().strMod = strengthMod.value;
+                s.GetComponent<Spring>().dmpMod = damperMod.value;
+                s.GetComponent<Spring>().grvMod = gravityMod.value;
+            }
+            else
+            {
+                springs.Remove(s);
+            }
+        }
+    }
 
 	/// <summary>
 	/// Makes the cloth.
@@ -65,6 +83,7 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_b = nodes[s1];
 					s.GetComponent<Spring>().Build();
 					s.transform.parent = nodes[key].transform;
+                    springs.Add(s);
 				}
 				if(nodes.ContainsKey(s2))
 				{
@@ -72,7 +91,8 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_a = nodes[key];
 					s.GetComponent<Spring>().node_b = nodes[s2];
 					s.GetComponent<Spring>().Build();
-					s.transform.parent = nodes[key].transform;
+                    s.transform.parent = nodes[key].transform;
+                    springs.Add(s);
 				}
 				if(nodes.ContainsKey(s3))
 				{
@@ -80,7 +100,8 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_a = nodes[key];
 					s.GetComponent<Spring>().node_b = nodes[s3];
 					s.GetComponent<Spring>().Build();
-					s.transform.parent = nodes[key].transform;
+                    s.transform.parent = nodes[key].transform;
+                    springs.Add(s);
 				}
 				if(nodes.ContainsKey(s4))
 				{
@@ -88,7 +109,8 @@ public class Cloth : MonoBehaviour
 					s.GetComponent<Spring>().node_a = nodes[key];
 					s.GetComponent<Spring>().node_b = nodes[s4];
 					s.GetComponent<Spring>().Build();
-					s.transform.parent = nodes[key].transform;
+                    s.transform.parent = nodes[key].transform;
+                    springs.Add(s);
 				}
 
 				// locks the outer edges
@@ -116,9 +138,15 @@ public class Cloth : MonoBehaviour
 	public GameObject node;
 	public GameObject spring;
 
+    public Slider strengthMod;
+    public Slider damperMod;
+    public Slider gravityMod;
+
+
 	public int rows;
 	public int columns;
 	public float offset;
 
 	Dictionary<Vector2, GameObject> nodes = new Dictionary<Vector2, GameObject>();
+    List<GameObject> springs = new List<GameObject>();
 }
