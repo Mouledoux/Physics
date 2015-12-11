@@ -88,7 +88,7 @@ public class Cloth : MonoBehaviour
 				GameObject n = Instantiate(node, nextPos, transform.localRotation) as GameObject;
 				// and rename it to its grid position [x, y] - [col, row]
 				n.name = "[" + i + "][" + j + "]";
-
+                n.transform.parent = transform;
 				// assign the current key to the current node
 				key = new Vector2(i, j);
 

@@ -13,6 +13,8 @@ public class CameraMove : MonoBehaviour
 		originPos = transform.position;
 		originRot = transform.localEulerAngles;
 		originScl = transform.localScale;
+
+        count = 0;
 	}
 
 	void Update ()
@@ -23,14 +25,19 @@ public class CameraMove : MonoBehaviour
 		float Rx = 0;	// Rotation around the X-axis
 		float Ry = 0;	// Rotation around the Y-axis
 
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && count < 2)
         {
             Cloth c = cloth.GetComponent<Cloth>();
-            GameObject b = Instantiate(cloth,
-                Camera.main.transform.forward * Mathf.Abs(Camera.main.transform.position.z/2),
+
+            Vector3 screenMid = (Camera.main.transform.position +
+                                Camera.main.transform.forward * 500);
+
+            GameObject b = Instantiate(cloth, screenMid,
                 Camera.main.transform.localRotation) as GameObject;
 
 
+
+            count++;
         }
 
         else if (Input.GetMouseButton(1))    // Checks if the right mouse button is being clicked
@@ -73,4 +80,5 @@ public class CameraMove : MonoBehaviour
 	Vector3 originScl;			// Initial scale of the camera
 
     public GameObject cloth;
+    int count;
 }
