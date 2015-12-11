@@ -29,11 +29,12 @@ public class Node : MonoBehaviour
 		                     Vector3.Distance(transform.position,
 		                 Camera.main.transform.position));
 
-        if (transform.position.y - ground.transform.position.y < 10)
+        if (transform.position.y - ground.transform.position.y < 15)
         {
-            vel = Vector3.zero;
+            if (Vector3.Distance(transform.position, ground.transform.position) < ground.transform.localScale.x/2)
+                vel.y = 0;
         }
-
+    
         if (Vector3.Distance(screenMid, transform.position) < 10)
         {
             GetComponent<MeshRenderer>().enabled = true;
