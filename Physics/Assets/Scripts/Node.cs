@@ -42,19 +42,17 @@ public class Node : MonoBehaviour
             {
                 held = true;
             }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                held = false;
-            }
         }
-        else
+        else if (!Input.GetMouseButton(0))
         {
+            held = false;
             GetComponent<MeshRenderer>().enabled = false;
         }
 
 		if(held)
 		{
-			acl += (screenMid - transform.position);
+            GetComponent<MeshRenderer>().enabled = true;
+            acl += (screenMid - transform.position);
 			if(Input.GetKeyDown(KeyCode.L))
 			{
 				isLocked = !isLocked;
