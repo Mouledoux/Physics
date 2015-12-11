@@ -23,16 +23,26 @@ public class CameraMove : MonoBehaviour
 		float Rx = 0;	// Rotation around the X-axis
 		float Ry = 0;	// Rotation around the Y-axis
 
-		if(Input.GetMouseButton(2))	// Checks if the left mouse button is being clicked
+        if (Input.GetKey(KeyCode.C))
+        {
+            Cloth c = cloth.GetComponent<Cloth>();
+            GameObject b = Instantiate(cloth,
+                Camera.main.transform.forward * Mathf.Abs(Camera.main.transform.position.z/2),
+                Camera.main.transform.localRotation) as GameObject;
+
+
+        }
+
+        else if (Input.GetMouseButton(1))    // Checks if the right mouse button is being clicked
+        {
+            Rx = speed * 0.25f * Input.GetAxis("Mouse Y") * Time.deltaTime; // Sets Rx to the difference the verticle movement of the mouse
+            Ry = speed * 0.25f * Input.GetAxis("Mouse X") * Time.deltaTime; // Sets Ry to the difference the horizontal movement of the mouse
+        }
+
+        if (Input.GetMouseButton(2))	// Checks if the middle mouse button is being clicked
 		{
 			Th = speed * Input.GetAxis("Mouse X") * Time.deltaTime;	// Sets Th to the difference the horizontal movement of the mouse
 			Tv = speed * Input.GetAxis("Mouse Y") * Time.deltaTime;	// Sets Tv to the difference the verticle movement of the mouse
-		}
-
-		if(Input.GetMouseButton(1))	// Checks if the right mouse button is being clicked
-		{
-			Rx = speed * 0.25f * Input.GetAxis("Mouse Y") * Time.deltaTime;	// Sets Rx to the difference the verticle movement of the mouse
-			Ry = speed * 0.25f * Input.GetAxis("Mouse X") * Time.deltaTime;	// Sets Ry to the difference the horizontal movement of the mouse
 		}
 
 		if(Input.GetAxis("Mouse ScrollWheel") > 0)	// Checks if the mouse wheele is being rolled forward
@@ -61,4 +71,6 @@ public class CameraMove : MonoBehaviour
 	Vector3 originPos;			// Initial position of the camera
 	Vector3 originRot;			// Initial rotation of the camera
 	Vector3 originScl;			// Initial scale of the camera
+
+    public GameObject cloth;
 }

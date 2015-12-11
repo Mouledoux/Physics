@@ -10,9 +10,12 @@ public class Node : MonoBehaviour
 	public bool isLocked;
 	bool held;
 
+    GameObject ground;
+
 	void Awake()
 	{
 		acl = vel = frc = Vector3.zero;
+        ground = FindObjectOfType<Ground>().gameObject;
 	}
 
 	void FixedUpdate()
@@ -26,17 +29,27 @@ public class Node : MonoBehaviour
 		                     Vector3.Distance(transform.position,
 		                 Camera.main.transform.position));
 
-		if(Input.GetMouseButtonDown(0))
-		{
-			if(Vector3.Distance(screenMid, transform.position) < 10)
-			{
-				held = true;
-			}
-		}
-		else if(Input.GetMouseButtonUp(0))
-		{
-			held = false;
-		}
+        if (transform.position.y - ground.transform.position.y < 10)
+        {
+            vel = Vector3.zero;
+        }
+
+        if (Vector3.Distance(screenMid, transform.position) < 10)
+        {
+            GetComponent<MeshRenderer>().enabled = true;
+            if (Input.GetMouseButtonDown(0))
+            {
+                held = true;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                held = false;
+            }
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+        }
 
 		if(held)
 		{

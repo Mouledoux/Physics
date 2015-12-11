@@ -7,7 +7,11 @@ public class Cloth : MonoBehaviour
 	void Start()
 	{
 		MakeCloth();
-	}
+
+        strengthMod = FindObjectOfType<StrengthSlider>().GetComponent<Slider>();
+        damperMod = FindObjectOfType<DamperSlider>().GetComponent<Slider>();
+        gravityMod = FindObjectOfType<GravitySlider>().GetComponent<Slider>();
+    }
 
     void FixedUpdate()
     {
@@ -218,9 +222,9 @@ public class Cloth : MonoBehaviour
 	public GameObject node;
 	public GameObject spring;
 
-    public Slider strengthMod;
-    public Slider damperMod;
-    public Slider gravityMod;
+    Slider strengthMod;
+    Slider damperMod;
+    Slider gravityMod;
 
 	Vector3 windForce;
 
