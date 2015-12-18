@@ -1,0 +1,8 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="UI">
+			<method name="Restart"/>
+			<method name="Exit"/>
+		</type>
+	</assembly>
+</linker>
